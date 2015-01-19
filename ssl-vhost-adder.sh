@@ -43,7 +43,7 @@ echo "# DO NOT EDIT. AUTOMATICALLY GENERATED.  IF YOU NEED TO MAKE A CHANGE PLEA
     SSLEngine on
     SSLCertificateFile /etc/httpd/ssl/certs/$certname
     SSLCertificateKeyFile /etc/httpd/ssl/keys/$keyname
-    SSLCACertificateFile /etc/httpd/ssl/cabundles/$bundlename
+    SSLCACertificateFile /etc/httpd/ssl/bundles/$bundlename
     
     SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
     
