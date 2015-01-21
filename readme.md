@@ -28,4 +28,19 @@ This repo is a collection of configuration scripts to add user and setup a virtu
 	sudo ./ssl-vhost-adder.sh
 ```
 
-	
+###To Setup Backup scripts###
+* create backup folders and backup log folders if not present already
+```
+#!shell
+
+	mkdir /backup
+	mkdir /backup/daily
+	mkdir /backup/weekly
+	mkdir /backup/monthly
+	mkdir /var/log/backup-log
+	mkdir /var/log/backup-log/daily
+	mkdir /var/log/backup-log/weekly
+	mkdir /var/log/backup-log/monthly
+
+```
+*  copy the backup scripts to the root users home folder
