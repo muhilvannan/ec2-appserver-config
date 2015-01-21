@@ -44,3 +44,25 @@ This repo is a collection of configuration scripts to add user and setup a virtu
 
 ```
 *  copy the backup scripts to the root users home folder
+```
+#!shell
+
+	cp daily-backup.sh /root/daily-backup.sh
+	cp weekly-backup.sh /root/weekly-backup.sh
+	cp monthly-backup.sh /root/monthly-backup.sh
+
+```
+* Setup cron jobs
+```
+#!shell
+
+15 1 * * * root sh /root/daily-backup.sh 1>/var/log/backup-log/daily/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/daily/error-$(date +\%d-\%m-\%Y).log;
+15 5 * * 0 root sh /root/weekly-backup.sh 1>/var/log/backup-log/weekly/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/weekly/error-$(date +\%d-\%m-\%Y).log;
+15 3 1 * * root sh /root/monthly-backup.sh 1>/var/log/backup-log/monthly/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/monthly/error-$(date +\%d-\%m-\%Y).log;
+10 0 * * 0 root rm -rf /var/log/backup-log/daily/*
+12 0 1 * * root rm -rf /var/log/backup-log/weekly/*
+15 0 31 12 * root rm -rf /var/log/backup-log/monthly/*
+
+```
+
+*  PLEASE NOTE : Requirement: s3cmd tools need to have been installed and configured beforehand on the server
