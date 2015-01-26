@@ -3,7 +3,7 @@
 This repo is a collection of configuration scripts to add user and setup a virtual hosts in a Amazon Linux Instance
 
 ###Notes###
-
+* The user data scripts should be helpful for initial ec2 server role configuration.  Either supply them when building the instance or execute them after building the default instance
 * Clone this repo with sudo to home directory of default ec2-user
 * Check if there is execute permission
 * Need to execute this as root. For security reasons execute with a user who is not root with sudo command
