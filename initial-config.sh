@@ -33,3 +33,12 @@ Header unset X-Pingback
 service httpd start
 chkconfig httpd on
 echo 'apache and php installed and configured'
+mkdir /backup
+mkdir /backup/daily
+mkdir /backup/weekly
+mkdir /backup/monthly
+mkdir /var/log/backup-log
+mkdir /var/log/backup-log/daily
+mkdir /var/log/backup-log/weekly
+mkdir /var/log/backup-log/monthly
+echo 'backup folder structure configured'
