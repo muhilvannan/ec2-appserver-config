@@ -1,17 +1,24 @@
 #!/bin/bash
+configfile='/root/.backup_config/backup'
+configfile_secured='/tmp/backup'
+
+if egrep -q -v '^#|^[^ ]*=[^;]*' "$configfile"; then
+  echo "Config file is unclean, cleaning it..." >&2
+  egrep '^#|^[^ ]*=[^;&]*'  "$configfile" > "$configfile_secured"
+  configfile="$configfile_secured"
+fi
+
+echo "Reading config...." >&2
+source "$configfile"
+DAY_OF_WEEK=$((`date +%u`-1))
+DAY_OF_MONTH=`date +%e`
+OFFSET=$(((${DAY_OF_WEEK} + 36 - ${DAY_OF_MONTH}) % 7 ))
+wkno=$(((${DAY_OF_MONTH} + ${OFFSET} - 1) / 7))
 cd /home/
 for f in *; do
     if [[ -d $f ]]; then
-     wkno=$(( 1 + $(date +%U) - $(date -d "$(date -d "-$(($(date +%d)-1)) days")" +%U) ))
-	backupfile=/backup/weekly/$f-$wkno.tar.gz
-        echo $backupfile    
-        tar -zcf $backupfile $f/public_html 2>>/var/log/backup-log/weekly/tar-error-$(date +"%d-%m-%Y").log
-        s3File="s3://aws-nix$backupfile"
-        echo $s3File
-    	s3cmd -c /root/.s3cfg --no-progress -v put $backupfile $s3File -f  >> /var/log/backup-log/weekly/s3upload-$(date +"%d-%m-%Y").log 
-	rm -f $backupfile
+	backupfile=$backupdir/weekly/$f-$wkno.tar.gz
+        echo $backupfile
+	tar -zcf $backupfile $f/public_html 2>>/var/log/backup-log/weekly/tar-error-$(date +"%d-%m-%Y").log
     fi
 done
-
-if [ -s /var/log/backup-log/weekly/tar-error-$(date +"%d-%m-%Y").log ] ; then mail -s "Weekly Backup Tarring error" support@accentdesign.co.uk < /var/log/backup-log/weekly/tar-error-$(date +"%d-%m-%Y").log ; fi
-if [ -s /var/log/backup-log/weekly/s3upload-$(date +"%d-%m-%Y").log ] ; then mail -s "Weekly Backup S3 Upload Log" support@accentdesign.co.uk < /var/log/backup-log/weekly/s3upload-$(date +"%d-%m-%Y").log ; fi

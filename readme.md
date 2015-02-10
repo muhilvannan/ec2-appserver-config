@@ -33,36 +33,33 @@ This repo is a collection of configuration scripts to add user and setup a virtu
 ```
 #!shell
 
-	mkdir /backup
-	mkdir /backup/daily
-	mkdir /backup/weekly
-	mkdir /backup/monthly
-	mkdir /var/log/backup-log
-	mkdir /var/log/backup-log/daily
-	mkdir /var/log/backup-log/weekly
-	mkdir /var/log/backup-log/monthly
-
-```
-*  copy the backup scripts to the root users home folder
-```
-#!shell
-
-	cp daily-backup.sh /root/daily-backup.sh
-	cp weekly-backup.sh /root/weekly-backup.sh
-	cp monthly-backup.sh /root/monthly-backup.sh
+	./configure-backup.sh
 
 ```
 * Setup cron jobs
 ```
 #!shell
-
+# for s3 bucket backed up files
+15 1 * * * root sh /root/s3-daily-backup.sh 1>/var/log/backup-log/daily/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/daily/error-$(date +\%d-\%m-\%Y).log;
+15 5 * * 0 root sh /root/s3-weekly-backup.sh 1>/var/log/backup-log/weekly/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/weekly/error-$(date +\%d-\%m-\%Y).log;
+15 3 1 * * root sh /root/s3-monthly-backup.sh 1>/var/log/backup-log/monthly/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/monthly/error-$(date +\%d-\%m-\%Y).log;
+# for s3 bucket backed up dbs
+15 2 * * * root sh /root/s3-db-daily-backup.sh 1>/var/log/backup-log/daily/full-db-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/daily/error-db-$(date +\%d-\%m-\%Y).log;
+15 6 * * 0 root sh /root/s3-db-weekly-backup.sh 1>/var/log/backup-log/weekly/full-db-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/weekly/error-db-$(date +\%d-\%m-\%Y).log;
+15 4 1 * * root sh /root/s3-db-monthly-backup.sh 1>/var/log/backup-log/monthly/full-db-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/monthly/error-db-$(date +\%d-\%m-\%Y).log;
+# for locally backed up files
 15 1 * * * root sh /root/daily-backup.sh 1>/var/log/backup-log/daily/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/daily/error-$(date +\%d-\%m-\%Y).log;
 15 5 * * 0 root sh /root/weekly-backup.sh 1>/var/log/backup-log/weekly/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/weekly/error-$(date +\%d-\%m-\%Y).log;
 15 3 1 * * root sh /root/monthly-backup.sh 1>/var/log/backup-log/monthly/full-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/monthly/error-$(date +\%d-\%m-\%Y).log;
+# for locally backed up dbs
+15 2 * * * root sh /root/db-daily-backup.sh 1>/var/log/backup-log/daily/full-db-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/daily/error-db-$(date +\%d-\%m-\%Y).log;
+15 6 * * 0 root sh /root/db-weekly-backup.sh 1>/var/log/backup-log/weekly/full-db-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/weekly/error-db-$(date +\%d-\%m-\%Y).log;
+15 4 1 * * root sh /root/db-monthly-backup.sh 1>/var/log/backup-log/monthly/full-db-$(date +\%d-\%m-\%Y).log; 2>/var/log/backup-log/monthly/error-db-$(date +\%d-\%m-\%Y).log;
+# clear out logs
 10 0 * * 0 root rm -rf /var/log/backup-log/daily/*
 12 0 1 * * root rm -rf /var/log/backup-log/weekly/*
 15 0 31 12 * root rm -rf /var/log/backup-log/monthly/*
 
 ```
 
-*  PLEASE NOTE : Requirement: s3cmd tools need to have been installed and configured beforehand on the server
+*  PLEASE NOTE : Requirement: aws cli tools need to have been installed and configured beforehand on the server for s3 backups
