@@ -8,7 +8,7 @@ if egrep -q -v '^#|^[^ ]*=[^;]*' "$configfile"; then
   configfile="$configfile_secured"
 fi
 
-echo "Reading config...." >&2
+
 source "$configfile"
 DAY_OF_WEEK=$((`date +%u`-1))
 DAY_OF_MONTH=`date +%e`

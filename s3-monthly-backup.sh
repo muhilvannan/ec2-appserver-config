@@ -8,7 +8,7 @@ if egrep -q -v '^#|^[^ ]*=[^;]*' "$configfile"; then
   configfile="$configfile_secured"
 fi
 
-echo "Reading config...." >&2
+
 source "$configfile"
 _mon="$(date +'%m')"
 cd /home/
