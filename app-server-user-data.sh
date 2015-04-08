@@ -1,7 +1,7 @@
 #!/bin/bash
 yum update -y
 yum install -y gcc make gcc-c++ git
-yum install -y httpd24
+yum install -y httpd24 mod24_ssl
 yum install -y php54 php54-devel php54-mysql php54-pdo php54-mbstring php54-gd php54-imap php54-intl php54-pdo php54-process php54-pspell php54-pgsql php54-xml php-pear pcre-devel php54-pecl*
 pear install Log
 cp /etc/httpd/conf.d/userdir.conf /etc/httpd/conf.d/userdir.conf.bak
