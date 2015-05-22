@@ -28,6 +28,11 @@ if [ $(id -u) -eq 0 ]; then
     		CustomLog /var/log/httpd/$username/access_log common
     		UseCanonicalName Off
     		UserDir enabled $username
+            <Directory /home/$username/public_html>
+                Options Indexes FollowSymLinks
+                AllowOverride All
+                Require all granted
+            </Directory>
     		<IfModule itk.c>
         	AssignUserID $username $username
     		</IfModule>

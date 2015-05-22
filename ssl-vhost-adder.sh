@@ -20,6 +20,11 @@ echo "# DO NOT EDIT. AUTOMATICALLY GENERATED.  IF YOU NEED TO MAKE A CHANGE PLEA
     CustomLog /var/log/httpd/$username/access_log common
     UseCanonicalName Off
     UserDir enabled $username
+    <Directory /home/$username/public_html>
+                Options Indexes FollowSymLinks
+                AllowOverride All
+                Require all granted
+        </Directory>
     <IfModule itk.c>
         AssignUserID $username $username
     </IfModule>
@@ -34,6 +39,11 @@ echo "# DO NOT EDIT. AUTOMATICALLY GENERATED.  IF YOU NEED TO MAKE A CHANGE PLEA
     CustomLog /var/log/httpd/$username/ssl-access_log common
     UseCanonicalName Off
     UserDir enabled $username
+    <Directory /home/$username/public_html>
+                Options Indexes FollowSymLinks
+                AllowOverride All
+                Require all granted
+        </Directory>
     <IfModule itk.c>
         # For more information on MPM ITK, please read:
         #   http://mpm-itk.sesse.net/
