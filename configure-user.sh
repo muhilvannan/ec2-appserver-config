@@ -45,6 +45,6 @@ if [ $(id -u) -eq 0 ]; then
                 fi
         fi
 else
-        echo "Only root may add a user to the system"
+        echo "Only root may add a user to the system. Use SUDO"
         exit 2
 fi
