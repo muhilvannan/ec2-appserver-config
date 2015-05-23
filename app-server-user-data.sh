@@ -25,6 +25,8 @@ echo "
     Options MultiViews SymLinksIfOwnerMatch IncludesNoExec
 </Directory>" > /etc/httpd/conf.d/userdir.conf
 cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.bak
+cp /etc/httpd/conf.d/welcome.conf /etc/httpd/conf/welcome.conf.bak.bak
+sed -i.bak -e "s/^Alias /#Alias /g" /etc/httpd/conf.d/welcome.conf
 echo  "ServerTokens ProductOnly
 ServerSignature Off
 Header unset X-Powered-By
